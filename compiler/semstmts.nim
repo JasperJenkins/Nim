@@ -445,7 +445,10 @@ proc semVarOrLet(c: PContext, n: PNode, symkind: TSymKind): PNode =
     var def: PNode = c.graph.emptyNode
     if a.sons[length-1].kind != nkEmpty:
       def = semExprWithType(c, a.sons[length-1], {efAllowDestructor})
-      if def.typ.kind == tyProc and def.kind == nkSym and def.sym.kind == skMacro:
+      if def.typ.kind == tyError:
+        localError(c.config, def.info, "cannot assign '$1' to variable. Is this an empty macro?" %
+          renderTree(a.sons[length-1], {renderNoComments}))
+      elif def.typ.kind == tyProc and def.kind == nkSym and def.sym.kind == skMacro:
         localError(c.config, def.info, "cannot assign macro symbol to variable here. Forgot to invoke the macro with '()'?")
         def.typ = errorType(c)
       elif def.typ.kind == tyTypeDesc and c.p.owner.kind != skMacro:
