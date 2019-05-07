@@ -466,7 +466,11 @@ proc genGotoForCase(p: BProc; caseStmt: PNode) =
         return
       let val = getOrdValue(it.sons[j])
       lineF(p, cpsStmts, "NIMSTATE_$#:$n", [val.rope])
-    genStmts(p, it.lastSon)
+    let b = it.lastSon
+    if b.kind == nkCommentStmt or b.kind == nkDiscardStmt and b.lastSon.kind == nkEmpty:
+      line(p, cpsStmts, ";\L")
+    else:
+      genStmts(p, b)
     endBlock(p)
 
 
