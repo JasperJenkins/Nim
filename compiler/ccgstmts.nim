@@ -462,7 +462,7 @@ proc genGotoForCase(p: BProc; caseStmt: PNode) =
         localError(p.config, it.info, "range notation not available for computed goto")
         return
       let val = getOrdValue(it.sons[j])
-      lineF(p, cpsStmts, "NIMSTATE_$#:$n", [val.rope])
+      lineF(p, cpsStmts, "NIMSTATE_$#:;$n", [val.rope])
     genStmts(p, it.lastSon)
     endBlock(p)
 
