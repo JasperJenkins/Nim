@@ -466,16 +466,16 @@ struct TFrame_ {
 #define NIM_POSIX_INIT  __attribute__((constructor))
 
 #ifdef __GNUC__
-#  define likely(x) __builtin_expect(x, 1)
-#  define unlikely(x) __builtin_expect(x, 0)
+#  define likelyProc(x) __builtin_expect(x, 1)
+#  define unlikelyProc(x) __builtin_expect(x, 0)
 /* We need the following for the posix wrapper. In particular it will give us
    POSIX_SPAWN_USEVFORK: */
 #  ifndef _GNU_SOURCE
 #    define _GNU_SOURCE
 #  endif
 #else
-#  define likely(x) (x)
-#  define unlikely(x) (x)
+#  define likelyProc(x) (x)
+#  define unlikelyProc(x) (x)
 #endif
 
 #if 0 // defined(__GNUC__) || defined(__clang__)
