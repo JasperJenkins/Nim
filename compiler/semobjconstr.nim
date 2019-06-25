@@ -302,8 +302,9 @@ proc semConstructFields(c: PContext, recNode: PNode,
         # None of the branches were explicitly selected by the user and no
         # value was given to the discrimator. We can assume that it will be
         # initialized to zero and this will select a particular branch as
-        # a result:
-        let matchedBranch = recNode.pickCaseBranch newIntLit(c.graph, initExpr.info, 0)
+        # a result, but zero may not valid, so we use the lowest value:
+        let matchedBranch = recNode.pickCaseBranch newIntLit(c.graph, initExpr.info,
+                                                             lastOrd(c.config, discriminator.typ))
         checkMissingFields matchedBranch
       else:
         result = initPartial
