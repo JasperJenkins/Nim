@@ -304,7 +304,7 @@ proc semConstructFields(c: PContext, recNode: PNode,
         # initialized to zero and this will select a particular branch as
         # a result. For error messages, we use the lowest valid value:
         let matchedBranch = recNode.pickCaseBranch newIntLit(c.graph, initExpr.info,
-                                                             lastOrd(c.config, discriminator.typ))
+                                                             firstOrd(c.config, discriminator.typ))
         checkMissingFields matchedBranch
       else:
         result = initPartial
