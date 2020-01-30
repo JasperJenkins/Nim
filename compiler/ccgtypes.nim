@@ -880,7 +880,7 @@ proc getTypeDescAux(m: BModule, origTyp: PType, check: var IntSet): Rope =
           m.s[cfsTypes].add(recdesc)
         elif tfIncompleteStruct notin t.flags: addAbiCheck(m, t, result)
   of tySet:
-    result = $t.kind & '_' & getTypeName(m, t.lastSon, hashType t.lastSon)
+    result = $t.kind & '_' & t.lastSon.typeName & $hashType(t.lastSon)
     m.typeCache[sig] = result
     if not isImportedType(t):
       let s = int(getSize(m.config, t))
