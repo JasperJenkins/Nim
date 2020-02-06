@@ -2384,8 +2384,7 @@ proc matchesAux(c: PContext, n, nOrig: PNode,
       m.typedescMatched = false
       n[a][1] = prepareOperand(c, formal.typ, n[a][1])
       n[a].typ = n[a][1].typ
-      arg = paramTypesMatch(m, formal.typ, n[a].typ,
-                                n[a][1], n[a][1])
+      arg = paramTypesMatch(m, formal.typ, n[a].typ, n[a][1], n[a][1])
       m.firstMismatch.kind = kTypeMismatch
       if arg == nil:
         noMatch()
@@ -2460,8 +2459,7 @@ proc matchesAux(c: PContext, n, nOrig: PNode,
           m.baseTypeMatch = false
           m.typedescMatched = false
           n[a] = prepareOperand(c, formal.typ, n[a])
-          arg = paramTypesMatch(m, formal.typ, n[a].typ,
-                                    n[a], nOrig[a])
+          arg = paramTypesMatch(m, formal.typ, n[a].typ, n[a], nOrig[a])
           if arg == nil:
             noMatch()
             return

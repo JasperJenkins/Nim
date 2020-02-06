@@ -269,7 +269,7 @@ proc opBindSym(c: PContext, scope: PScope, n: PNode, isMixin: int, info: PNode):
     return errorNode(c, n)
 
   let id = if n.kind == nkIdent: n
-    else: newIdentNode(getIdent(c.cache, n.strVal), info.info)
+           else: newIdentNode(getIdent(c.cache, n.strVal), info.info)
 
   let tmpScope = c.currentScope
   c.currentScope = scope
@@ -279,7 +279,7 @@ proc opBindSym(c: PContext, scope: PScope, n: PNode, isMixin: int, info: PNode):
     result = symChoice(c, id, s, TSymChoiceRule(isMixin))
   else:
     errorUndeclaredIdentifier(c, info.info, if n.kind == nkIdent: n.ident.s
-      else: n.strVal)
+                                            else: n.strVal)
   c.currentScope = tmpScope
 
 proc semDynamicBindSym(c: PContext, n: PNode): PNode =

@@ -1457,10 +1457,9 @@ proc semSubscript(c: PContext, n: PNode, flags: TExprFlags): PNode =
     return
   checkMinSonsLen(n, 2, c.config)
   # make sure we don't evaluate generic macros/templates
-  n[0] = semExprWithType(c, n[0],
-                              {efNoEvaluateGeneric})
+  n[0] = semExprWithType(c, n[0], {efNoEvaluateGeneric})
   var arr = skipTypes(n[0].typ, {tyGenericInst, tyUserTypeClassInst, tyOwned,
-                                      tyVar, tyLent, tyPtr, tyRef, tyAlias, tySink})
+                                 tyVar, tyLent, tyPtr, tyRef, tyAlias, tySink})
   if arr.kind == tyStatic:
     if arr.base.kind == tyNone:
       result = n
@@ -1477,8 +1476,7 @@ proc semSubscript(c: PContext, n: PNode, flags: TExprFlags): PNode =
     if n.len != 2: return nil
     n[0] = makeDeref(n[0])
     for i in 1..<n.len:
-      n[i] = semExprWithType(c, n[i],
-                                  flags*{efInTypeof, efDetermineType})
+      n[i] = semExprWithType(c, n[i], flags*{efInTypeof, efDetermineType})
     # Arrays index type is dictated by the range's type
     if arr.kind == tyArray:
       var indexType = arr[0]
