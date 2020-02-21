@@ -200,8 +200,7 @@ proc writeRope*(head: Rope, filename: AbsoluteFile): bool =
 
 proc `$`*(r: Rope): string =
   ## converts a rope back to a string.
-  result = newString(r.len)
-  setLen(result, 0)
+  result = newStringOfCap(r.len)
   for s in leaves(r): result.add(s)
 
 proc ropeConcat*(a: varargs[Rope]): Rope =
