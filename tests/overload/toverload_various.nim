@@ -17,6 +17,7 @@ static: constant folding
 static: static string
 foo1
 1
+MY_CUSTOM_DOLLAR
 '''
 """
 
@@ -270,3 +271,14 @@ proc hmac*[A, B](HashType: typedesc, key: openarray[A],
   ctx.init(nil, 0)
 
 sha256.hmac("", "")
+
+block subobjOverGenericPreference:
+  type
+     Foo {.pure, inheritable.} = object
+     Bar = object of Foo
+  proc test(self: object): bool = false
+  proc test(self: Foo): bool = true
+  proc `$`(self: Foo): string = "MY_CUSTOM_DOLLAR"
+  let x = Bar.default
+  assert test(x), "test failed"
+  echo x

@@ -6,7 +6,7 @@ B
 int
 T
 int16
-T
+int
 ref T
 123
 2
@@ -61,7 +61,7 @@ takesInt(x) # "T"
 var y: int16
 takesInt(y) # "int16"
 var z: range[0..4] = 0
-takesInt(z) # "T"
+takesInt(z) # "int"
 
 proc gen[T](x: ref ref T) = echo "ref ref T"
 proc gen[T](x: ref T) = echo "ref T"

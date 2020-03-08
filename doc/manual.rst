@@ -2394,11 +2394,11 @@ of the argument.
    range. Or:  ``a`` is a floating point literal of value ``v``
    and ``f`` is a floating point type and ``v`` is in ``f``'s
    range.
-3. Generic match: ``f`` is a generic type and ``a`` matches, for
+3. Subrange or subtype match: ``a`` is a ``range[T]`` and ``T``
+   matches ``f`` exactly. Or: ``a`` is a subtype of ``f``.
+4. Generic match: ``f`` is a generic type and ``a`` matches, for
    instance ``a`` is ``int`` and ``f`` is a generic (constrained) parameter
    type (like in ``[T]`` or ``[T: int|char]``.
-4. Subrange or subtype match: ``a`` is a ``range[T]`` and ``T``
-   matches ``f`` exactly. Or: ``a`` is a subtype of ``f``.
 5. Integral conversion match: ``a`` is convertible to ``f`` and ``f`` and ``a``
    is some integer or floating point type.
 6. Conversion match: ``a`` is convertible to ``f``, possibly via a user
@@ -2413,8 +2413,8 @@ A routine ``p`` matches better than a routine ``q`` if the following
 algorithm returns true::
 
   for each matching category m in ["exact match", "literal match",
-                                  "generic match", "subtype match",
-                                  "integral match", "conversion match"]:
+                                   "subtype match", "generic match"
+                                   "integral match", "conversion match"]:
     if count(p, m) > count(q, m): return true
     elif count(p, m) == count(q, m):
       discard "continue with next category m"
@@ -2436,7 +2436,7 @@ Some examples:
   var y: int16
   takesInt(y) # "int16"
   var z: range[0..4] = 0
-  takesInt(z) # "T"
+  takesInt(z) # "int"
 
 
 If this algorithm returns "ambiguous" further disambiguation is performed:

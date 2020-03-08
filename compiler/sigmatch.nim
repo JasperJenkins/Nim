@@ -283,23 +283,19 @@ proc writeMatches*(c: TCandidate) =
   echo "  inheritance: ", c.inheritancePenalty
 
 proc cmpCandidates*(a, b: TCandidate): int =
-  result = a.exactMatches - b.exactMatches
-  if result != 0: return
-  result = a.genericMatches - b.genericMatches
-  if result != 0: return
-  result = a.subtypeMatches - b.subtypeMatches
-  if result != 0: return
-  result = a.intConvMatches - b.intConvMatches
-  if result != 0: return
-  result = a.convMatches - b.convMatches
-  if result != 0: return
+  template check(x) =
+    result = x
+    if result != 0: return
+  check a.exactMatches - b.exactMatches
+  check a.subtypeMatches - b.subtypeMatches
+  check a.genericMatches - b.genericMatches
+  check a.intConvMatches - b.intConvMatches
+  check a.convMatches - b.convMatches
   # the other way round because of other semantics:
-  result = b.inheritancePenalty - a.inheritancePenalty
-  if result != 0: return
+  check b.inheritancePenalty - a.inheritancePenalty
   # prefer more specialized generic over more general generic:
-  result = complexDisambiguation(a.callee, b.callee)
+  check complexDisambiguation(a.callee, b.callee)
   # only as a last resort, consider scoping:
-  if result != 0: return
   result = a.calleeScope - b.calleeScope
 
 proc argTypeToString(arg: PNode; prefer: TPreferedDesc): string =
@@ -2234,7 +2230,7 @@ proc paramTypesMatch*(m: var TCandidate, f, a: PType,
       onUse(arg.info, arg[best].sym)
       result = paramTypesMatchAux(m, f, arg[best].typ, arg[best], argOrig)
   when false:
-    if m.calleeSym != nil and m.calleeSym.name.s == "[]":
+    if m.calleeSym != nil and m.calleeSym.name.s == "test":
       echo m.c.config $ arg.info, " for ", m.calleeSym.name.s, " ", m.c.config $ m.calleeSym.info
       writeMatches(m)
 
