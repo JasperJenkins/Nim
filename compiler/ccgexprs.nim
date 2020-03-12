@@ -1543,8 +1543,7 @@ proc genOf(p: BProc, x: PNode, typ: PType, d: var TLoc) =
       r.add(~".Sup")
       t = skipTypes(t[0], skipPtrs)
   if isObjLackingTypeField(t):
-    globalError(p.config, x.info,
-      "no 'of' operator available for pure objects")
+    globalError(p.config, x.info, "no 'of' operator available for pure objects")
   if nilCheck != nil:
     r = ropecg(p.module, "(($1) && ($2))", [nilCheck, genOfHelper(p, dest, r, x.info)])
   else:
