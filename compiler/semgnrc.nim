@@ -51,7 +51,7 @@ proc semGenericStmtScope(c: PContext, n: PNode,
   closeScope(c)
 
 template macroToExpand(s): untyped =
-  s.kind in {skMacro, skTemplate} and (s.typ.len == 1 or sfAllUntyped in s.flags)
+  s.kind in {skMacro, skTemplate} and (s.typ != nil and s.typ.len == 1 or sfAllUntyped in s.flags)
 
 template macroToExpandSym(s): untyped =
   sfCustomPragma notin s.flags and s.kind in {skMacro, skTemplate} and

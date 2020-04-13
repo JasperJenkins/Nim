@@ -460,7 +460,7 @@ proc generateThunk(c: PTransf; prc: PNode, dest: PType): PNode =
 proc transformConv(c: PTransf, n: PNode): PNode =
   # numeric types need range checks:
   var dest = skipTypes(n.typ, abstractVarRange)
-  var source = skipTypes(n[1].typ, abstractVarRange)
+  var source = skipTypes(n[1].typ, abstractVarRange + {tyStatic})
   case dest.kind
   of tyInt..tyInt64, tyEnum, tyChar, tyUInt8..tyUInt32:
     # we don't include uint and uint64 here as these are no ordinal types ;-)
@@ -525,6 +525,12 @@ proc transformConv(c: PTransf, n: PNode): PNode =
     else:
       result = transformSons(c, n)
   of tyObject:
+    #debug("--- BEGIN")
+    #debug(n.renderTree)
+    #echo $n.info.line & ":" & $n.info.col
+    #debug(source)
+    #debug(dest)
+    #debug("--- END")
     var diff = inheritanceDiff(dest, source)
     if diff < 0:
       result = newTransNode(nkObjUpConv, n, 1)

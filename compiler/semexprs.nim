@@ -2275,6 +2275,10 @@ proc semMagic(c: PContext, n: PNode, s: PSym, flags: TExprFlags): PNode =
   of mSizeOf:
     markUsed(c, n.info, s)
     result = semSizeof(c, setMs(n, s))
+  of mNBindSym:
+    # we can come here twice, do nothing the second time.
+    if n[1].kind in {nkSym, nkOpenSymChoice, nkClosedSymChoice}: result = n
+    else: result = semDirectOp(c, n, flags)
   else:
     result = semDirectOp(c, n, flags)
 

@@ -11,6 +11,7 @@
 
 # included from sem.nim
 
+import astalgo
 type
   ObjConstrContext = object
     typ: PType               # The constructed type

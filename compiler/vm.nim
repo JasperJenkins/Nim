@@ -16,7 +16,7 @@ import
   strutils, msgs, vmdef, vmgen, nimsets, types, passes,
   parser, vmdeps, idents, trees, renderer, options, transf, parseutils,
   vmmarshal, gorgeimpl, lineinfos, tables, btrees, macrocacheimpl,
-  modulegraphs, sighashes, int128
+  modulegraphs, sighashes, int128, astalgo
 
 from semfold import leValueConv, ordinalValToString
 from evaltempl import evalTemplate
@@ -1521,6 +1521,8 @@ proc rawExecute(c: PCtx, start: int, tos: PStackFrame): TFullReg =
         stackTrace(c, tos, pc, formatErrorIndexBound(idx, src.len-1))
       else:
         regs[ra].node = src[idx]
+        if regs[ra].node != nil:
+          regs[ra].node.flags.incl nfIsRef
     of opcNSetChild:
       decodeBC(rkNode)
       let idx = regs[rb].intVal.int
