@@ -287,8 +287,8 @@ proc cmpCandidates*(a, b: TCandidate): int =
     result = x
     if result != 0: return
   check a.exactMatches - b.exactMatches
-  check a.subtypeMatches - b.subtypeMatches
   check a.genericMatches - b.genericMatches
+  check a.subtypeMatches - b.subtypeMatches
   check a.intConvMatches - b.intConvMatches
   check a.convMatches - b.convMatches
   # the other way round because of other semantics:
